@@ -1,8 +1,7 @@
 
  <h1> TODO LIST</h1>
 <br/>
-🎯 Hi our Project Team Name is TODO LIST. 
-<br/>
+🎯 
 <hr>
 Using HTML, CSS, Javascript and React JS technology I have created to-do list, and using Chakra-UI framework I have created this web site and I have displayed data of this app to-do on home page, you can see You can edit any data, new or old, and I've added filters to it as well.
 <br/>
