@@ -23,6 +23,7 @@ import {
   import { filterData, getData } from "../Redux/actions";
   import  {EditTodoList}  from "./EditTodoList";
   import { useState } from "react";
+
   
   export default function TodoList() {
 	const dispatch = useDispatch();
@@ -30,45 +31,68 @@ import {
 	let data = useSelector((store) => store.todos);
 	useEffect(() => {
 	  apiCall();
+	  
 	}, []);
+	
+
 
 	const [user, setuser] = useState({
+		
 		name: "",
 		date: "",
 		age: "",
 		last:"",
 	  });
 
+	  
+
+	
+
 	  function handleChange(e) {
-		//   console.log(e.target.value)
-		setuser({ ...user, [e.target.id]: e.target.value });
+			setuser({ ...user, [e.target.id]: e.target.value });
+	
 	  }
+
+
+	    
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-		// console.log(user)
-		try{
-		  let res = await fetch('https://to-do-i7no.onrender.com/todo',{
-			method: "POST",
-			headers: { "content-type": "application/json" },
-			body: JSON.stringify(user),
-		  });
-		  let data = await res.json();
-		  console.log(data)
-		} catch (e){
-			// console.log(e)
-			
-		}
+		if(user.name == "" || user.age==""|| user.date=="" || user.last==""){
+			toast({
+				title: "Please Fill Carefully",
+				description: "We've Not allow todo fill the all data",
+				status: "warning",
+				duration: 9000,
+				isClosable: true,
+				position: "top",
+			  });
 
-		toast({
-			title: "Successfully Add Todo",
-			description: "We've created your todo.",
-			status: "success",
-			duration: 9000,
-			isClosable: true,
-			position: "top",
-		  });
-		  window.location.reload();
+		}else{
+				// console.log(user)
+				try{
+					let res = await fetch('https://to-do-i7no.onrender.com/todo',{
+					  method: "POST",
+					  headers: { "content-type": "application/json"},
+					  body: JSON.stringify(user),
+					});
+					let data = await res.json();
+					console.log(data)
+				  }catch (e){
+					// console.log(e)
+				}
+				toast({
+					title: "Successfully Add Todo",
+					description: "We've created your todo.",
+					status: "success",
+					duration: 9000,
+					isClosable: true,
+					position: "top",
+				  });
+			}
+			
+			
+		
 
 	}
 
@@ -78,8 +102,8 @@ import {
 	  res = await res.json();
 	  dispatch(getData(res));
 	}
+	apiCall()
 
-	// console.log(data)
   
 	async function handleDelete(id) {
 	   await fetch(`https://to-do-i7no.onrender.com/todo/${id}`, {
@@ -88,6 +112,15 @@ import {
 		  "Content-Type": "application/json",
 		},
 	  });
+	  toast({
+		title: "DELETE Successfully",
+		description:`your are Deleted ${id} todo.`,
+		status: "warning",
+		duration: 9000,
+		isClosable: true,
+		position: "top",
+	  });
+
 	  apiCall();
 	}
 
@@ -104,7 +137,7 @@ import {
 		  <FormControl boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"} p={"2rem"}>
 			<Heading m={15}>ADD TO-DO</Heading>
 			<FormLabel mt="10px">Name</FormLabel>
-			<Input type="text" placeholder="Alan " id="name" onChange={handleChange} />
+			<Input type="text" placeholder="Alan " id="name"  onChange={handleChange} />
 
 			<FormLabel mt="10px">LAST NAME</FormLabel>
 			<Input type="text" placeholder="Walker" id="last" onChange={handleChange} />
